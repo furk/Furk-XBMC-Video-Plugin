@@ -22,7 +22,8 @@ import xbmc, xbmcplugin, xbmcgui
 
 __settings__ = sys.modules[ "__main__" ].__settings__
 
-__mc_url = 'https://www.furk.net/mc/'
+__mc_url = 'http://www.furk.net/mc/'
+#__mc_url = 'http://loc.dev.furk.net:30080/mc/'
 
 def searchDirs(query):
 	recent = __settings__.getSetting('recent_queries').split('|')
@@ -51,7 +52,6 @@ def getFiles(did):
 	files = list_xml.getElementsByTagName('file')
 
 	return(files)
-
 
 
 def fetch(action, params):

@@ -26,22 +26,20 @@ __url__ = 'http://www.furk.net/t/xbmc'
 __version__ = '1.0.6'
 __settings__ = xbmcaddon.Addon(id='plugin.video.furk')
 
-print "[PLUGIN] '%s: version %s' initialized!" % (__plugin__, __version__)
+print "[PLUGIN] '%s: version %s' initialized! argv=%s" % (__plugin__, __version__, sys.argv)
 
 def parse_qs(u):
 	params = '?' in u and dict(p.split('=') for p in u[u.index('?') + 1:].split('&')) or {}
 	
 	return params;
 
+
 if __name__ == "__main__":
 	from resources.lib import getter, printer
-
 	
-	xbmc.log('params_str=%s' % sys.argv[2])	
 	params = parse_qs(sys.argv[2])
 	if not params:
 		params['action'] = 'dirs'
-	xbmc.log('_params=%s' % params)	
 
 	if __settings__.getSetting('login') == '' or __settings__.getSetting('password') == '':
 		resp = xbmcgui.Dialog().yesno("No username/password set!","Furk.net requires you to be logged in to view", \
@@ -78,8 +76,7 @@ if __name__ == "__main__":
 			printer.printDirs(dirs)
 
 	else:
-		# torrents a root Directories 
-		xbmc.log('argv=%s' % sys.argv)
+		# torrents as root Directories 
 		dirs = getter.getDirs()
 		printer.printDirs(dirs)
 

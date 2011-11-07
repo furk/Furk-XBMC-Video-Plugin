@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.furk" version="1.0.6" name="Furk.net BitTorrent Proxy" provider-name="Furk.net">
+<addon id="plugin.video.furk" version="1.0.7" name="Furk.net BitTorrent Proxy" provider-name="Furk.net">
 	<requires/>
 	<extension point="xbmc.python.pluginsource"
 	           library="default.py">

@@ -22,6 +22,13 @@ import urllib
 
 __settings__ = sys.modules[ "__main__" ].__settings__
 
+try:
+	pluginhandle = int( sys.argv[ 1 ] )
+	xbmc.log('got handle=%s' % pluginhandle)	
+except:
+	pluginhandle = ""
+
+
 def printRecentQueries():
 	# search
 
@@ -34,7 +41,7 @@ def printRecentQueries():
 	url = sys.argv[0] + '?action=search&query='
 	listitem = xbmcgui.ListItem()
 	listitem.setLabel(name)
-	xbmcplugin.addDirectoryItem(int(sys.argv[1]), url, listitem, isFolder=True, totalItems=total)
+	xbmcplugin.addDirectoryItem(pluginhandle, url, listitem, isFolder=True, totalItems=total)
 
 	for r in recent:
 		url = sys.argv[0] + '?action=search&query=' + r
@@ -42,31 +49,23 @@ def printRecentQueries():
 		r = urllib.unquote(r)
 		listitem = xbmcgui.ListItem()
 		listitem.setLabel(r)
-		xbmcplugin.addDirectoryItem(int(sys.argv[1]), url, listitem, isFolder=True, totalItems=total)
+		xbmcplugin.addDirectoryItem(pluginhandle, url, listitem, isFolder=True, totalItems=total)
 
-
-	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+	xbmcplugin.endOfDirectory(pluginhandle)
 	
 
 def printDirs(dirs):
-	xbmcplugin.setContent(int(sys.argv[1]), 'videos')
-	xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_LABEL)
-	xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_DATE)
+	xbmc.log('handle=%s' % pluginhandle)	
+	#xbmcplugin.setContent(handle=pluginhandle, 'videos')
+	#xbmcplugin.addSortMethod(handle=pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 	
-	total = len(dirs)
-
 	# search
-	total = total + 1
 	name = '@Search'
 	date = '1970-01-01'
 	url = sys.argv[0] + '?action=recent_queries&query='
-	listitem = xbmcgui.ListItem()
-	listitem.setLabel(name)
-	listitem.setLabel2(date)
-	listitem.setThumbnailImage('http://www.furk.net/img/logo.png')
-	listitem.setInfo('video', {'date': date, 'title': name})
-	xbmcplugin.addDirectoryItem(int(sys.argv[1]), url, listitem, isFolder=True, totalItems=total)
-
+	listitem = xbmcgui.ListItem(name, thumbnailImage='http://www.furk.net/img/logo.png')
+	listitem.setInfo(type='video', infoLabels={'Date': date, 'Title': name})
+	xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
 
 	for d in dirs:
 		id = d.getElementsByTagName('id').item(0).firstChild.data
@@ -75,19 +74,18 @@ def printDirs(dirs):
 		thumb = d.getElementsByTagName('thumb').item(0).firstChild.data
 
 		url = sys.argv[0] + '?action=files&did=' + id
-		
-		listitem = xbmcgui.ListItem()
-		listitem.setLabel(name)
-		listitem.setLabel2(date)
-		listitem.setThumbnailImage(thumb)
-		listitem.setInfo('video', {'date': date, 'title': name})
-		xbmcplugin.addDirectoryItem(int(sys.argv[1]), url, listitem, isFolder=True, totalItems=total)
 
-	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+		listitem = xbmcgui.ListItem(name, thumbnailImage=thumb)
+		listitem.setInfo(type='video', infoLabels={'Date': date, 'Title': name})
+		xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
+
+	xbmcplugin.endOfDirectory(pluginhandle)
+
 
 def printFiles(files):
-	xbmcplugin.setContent(int(sys.argv[1]), 'videos')
-	xbmcplugin.addSortMethod(int(sys.argv[1]), xbmcplugin.SORT_METHOD_LABEL)
+	xbmc.log('handle=%s' % pluginhandle)
+	xbmcplugin.setContent(pluginhandle, 'videos')
+	xbmcplugin.addSortMethod(pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 	
 	total = len(files)
 	for f in files:
@@ -97,13 +95,11 @@ def printFiles(files):
 
 		url = sys.argv[0] + '?action=play&url=' + urllib.quote(play_url)
 		
-		listitem = xbmcgui.ListItem()
-		listitem.setLabel(name)
-		listitem.setInfo('video', {'title': name})
-		xbmcplugin.addDirectoryItem(int(sys.argv[1]), url, listitem, isFolder=False, totalItems=total)
-		#xbmc.log('f=%s' % name)	
+		listitem = xbmcgui.ListItem(name)
+		listitem.setInfo(type='video', infoLabels={'Title': name})
+		xbmcplugin.addDirectoryItem(pluginhandle, url, listitem, isFolder=False, totalItems=total)
 
-	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+	xbmcplugin.endOfDirectory(pluginhandle)
 
 
 
