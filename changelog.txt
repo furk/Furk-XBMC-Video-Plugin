@@ -6,3 +6,7 @@
 respository
 - Small text changes, added note about ability download torrents from RSS
 feeds
+
+[B]1.0.8[/B]
+- fixed "called with an invalid handle" 
+

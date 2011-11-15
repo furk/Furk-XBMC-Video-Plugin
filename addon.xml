@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.furk" version="1.0.7" name="Furk.net BitTorrent Proxy" provider-name="Furk.net">
+<addon id="plugin.video.furk" version="1.0.8" name="Furk.net BitTorrent Proxy" provider-name="Furk.net">
 	<requires/>
 	<extension point="xbmc.python.pluginsource"
 	           library="default.py">
@@ -18,7 +18,7 @@ Furk.net has developed extended content verification. For every video torrent yo
 		<platform>all</platform>
 		<minversion>29000</minversion>
 		<disclaimer>
-			You must have a premium account (9 euros per month, 200GB limit) at www.furk.net for this addon to function.
+			You must have an account at www.furk.net for this addon to function.
 		</disclaimer>
 	</extension>
 </addon>
