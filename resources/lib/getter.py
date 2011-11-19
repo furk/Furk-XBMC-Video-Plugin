@@ -36,8 +36,10 @@ def searchDirs(query):
 
 	xbmc.log('recent=%s' % recent)
 	
-	list_xml = fetch('search', { 'q': urllib.quote(query), 'filter': 'instant', 'sort': 'relevance' })
+	list_xml = fetch('search', { 'q': urllib.quote(query), 'filter': 'cached' })
 	dirs = list_xml.getElementsByTagName('dir')
+
+	xbmc.log('dirs=%s' % dirs)
 
 	return(dirs)
 

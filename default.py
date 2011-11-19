@@ -20,17 +20,16 @@ import sys, urllib
 import xbmc, xbmcaddon, xbmcgui
 
 # Plugin constants
+__settings__ = xbmcaddon.Addon(id='plugin.video.furk')
 __plugin__ = 'Furk.net'
 __author__ = 'Gpun Yog'
 __url__ = 'http://www.furk.net/t/xbmc'
-__version__ = '1.0.7'
-__settings__ = xbmcaddon.Addon(id='plugin.video.furk')
-
+__version__ = '1.0.8'
 print "[PLUGIN] '%s: version %s' initialized! argv=%s" % (__plugin__, __version__, sys.argv)
+
 
 def parse_qs(u):
 	params = '?' in u and dict(p.split('=') for p in u[u.index('?') + 1:].split('&')) or {}
-	
 	return params;
 
 
@@ -38,9 +37,12 @@ if __name__ == "__main__":
 	from resources.lib import getter, printer
 	
 	params = parse_qs(sys.argv[2])
+
+	# show files list by default 
 	if not params:
 		params['action'] = 'dirs'
 
+	# check if login and pass has been set
 	if __settings__.getSetting('login') == '' or __settings__.getSetting('password') == '':
 		resp = xbmcgui.Dialog().yesno("No username/password set!","Furk.net requires you to be logged in to view", \
 			"videos.  Would you like to log-in now?")
@@ -60,9 +62,9 @@ if __name__ == "__main__":
 		# Show previous searches
 		printer.printRecentQueries()
 
-	elif(params['action'] == 'search_test'):
-		# Search
-		dirs = getter.searchDirs('xxx')
+	elif(params['action'] == 'dirs'):
+		# torrents as root Directories 
+		dirs = getter.getDirs()
 		printer.printDirs(dirs)
 
 	elif(params['action'] == 'search'):
@@ -75,7 +77,7 @@ if __name__ == "__main__":
 			dirs = getter.searchDirs(query)
 			printer.printDirs(dirs)
 
-	else:
+	elif(params['action'] == 'dirs'):
 		# torrents as root Directories 
 		dirs = getter.getDirs()
 		printer.printDirs(dirs)

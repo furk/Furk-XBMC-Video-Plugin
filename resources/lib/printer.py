@@ -28,44 +28,37 @@ try:
 except:
 	pluginhandle = ""
 
+def _addSearchItem():
+	name = '[SEARCH]'
+	url = sys.argv[0] + '?action=search&query='
+	listitem = xbmcgui.ListItem(name)
+	listitem.setInfo(type='video', infoLabels={'Title': name})
+	xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
 
 def printRecentQueries():
 	# search
+	_addSearchItem();
 
 	recent = __settings__.getSetting('recent_queries').split('|')
 	if '' in recent:
 		recent.remove('')
 	total = len(recent) + 1
 
-	name = '@Search...'
-	url = sys.argv[0] + '?action=search&query='
-	listitem = xbmcgui.ListItem()
-	listitem.setLabel(name)
-	xbmcplugin.addDirectoryItem(pluginhandle, url, listitem, isFolder=True, totalItems=total)
-
 	for r in recent:
+		name = urllib.unquote(r)
 		url = sys.argv[0] + '?action=search&query=' + r
 
-		r = urllib.unquote(r)
-		listitem = xbmcgui.ListItem()
-		listitem.setLabel(r)
-		xbmcplugin.addDirectoryItem(pluginhandle, url, listitem, isFolder=True, totalItems=total)
+		listitem = xbmcgui.ListItem(name, thumbnailImage='http://www.furk.net/img/logo.png')
+		listitem.setInfo(type='video', infoLabels={'Title': name})
+		xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
 
 	xbmcplugin.endOfDirectory(pluginhandle)
 	
 
 def printDirs(dirs):
 	xbmc.log('handle=%s' % pluginhandle)	
-	#xbmcplugin.setContent(handle=pluginhandle, 'videos')
-	#xbmcplugin.addSortMethod(handle=pluginhandle, xbmcplugin.SORT_METHOD_LABEL)
 	
-	# search
-	name = '@Search'
-	date = '1970-01-01'
-	url = sys.argv[0] + '?action=recent_queries&query='
-	listitem = xbmcgui.ListItem(name, thumbnailImage='http://www.furk.net/img/logo.png')
-	listitem.setInfo(type='video', infoLabels={'Date': date, 'Title': name})
-	xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
+	_addSearchItem();
 
 	for d in dirs:
 		id = d.getElementsByTagName('id').item(0).firstChild.data
