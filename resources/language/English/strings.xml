@@ -3,5 +3,6 @@
 	<string id="20001">Login</string>
 	<string id="20002">Password</string>
 	<string id="20003">Recent search queries</string>
+	<string id="20004">API key (optional)</string>
 </strings>
 
