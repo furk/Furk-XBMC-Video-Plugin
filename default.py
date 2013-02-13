@@ -16,12 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import sys, urllib
+
+
+import sys
 import xbmc, xbmcaddon, xbmcgui, xbmcplugin
-import urlparse
-import urllib2
-import json
+import urllib, urllib2
 import re
+
+# quircks for old xbmc
+try:
+	import json
+	from urlparse import parse_qs
+except: 
+	# pre-frodo and python 2.4
+	import simplejson as json
+	from cgi import parse_qs
 
 # Plugin constants
 __settings__ = xbmcaddon.Addon(id='plugin.video.furk')
@@ -38,6 +47,7 @@ try:
     pluginhandle = int( sys.argv[ 1 ] )
 except:
     pluginhandle = ""
+
 
 
 # based on whatthefurk plugin code
@@ -116,7 +126,7 @@ def runner():
             return
     
     # get params
-    params = urlparse.parse_qs(sys.argv[2][1:])
+    params = parse_qs(sys.argv[2][1:])
     for k in params:
         params[k] = params[k][0]
     xbmc.log("params=%s" % params)
@@ -147,12 +157,12 @@ def runner():
         add_pseudo_items()
         if not files:
             return
-        for item in files:
-            url = sys.argv[0] + '?action=file&id=' + item['id']
-            listitem = xbmcgui.ListItem(item['name'])
-            if item.has_key('ss_urls_tn_all'):
-                listitem.setThumbnailImage(item['ss_urls_tn_all']);
-            listitem.setInfo(type='video', infoLabels={'title': item['name'], 'size': item['size']})
+        for fl in files:
+            url = sys.argv[0] + '?action=file&id=' + fl['id']
+            listitem = xbmcgui.ListItem(fl['name'])
+            if fl.has_key('ss_urls_tn_all'):
+                listitem.setThumbnailImage(fl['ss_urls_tn_all']);
+            listitem.setInfo(type='video', infoLabels={'title': fl['name'], 'size': int(fl['size'])})
             xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
         
         xbmcplugin.endOfDirectory(pluginhandle)
@@ -170,7 +180,7 @@ def runner():
             listitem = xbmcgui.ListItem(name)
             if item.has_key('url_tn'):
                 listitem.setThumbnailImage(item['url_tn']);
-            listitem.setInfo(type='video', infoLabels={'title': name, 'size': item['size'], 'duration': item['length']})
+            listitem.setInfo('video', {'title': name, 'size': int(item['size']), 'duration': item['length']})
             xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
         
         xbmcplugin.endOfDirectory(pluginhandle)
@@ -223,7 +233,7 @@ def runner():
             listitem = xbmcgui.ListItem(item['name'])
             if item.has_key('ss_urls_tn_all'):
                 listitem.setThumbnailImage(item['ss_urls_tn_all']);
-            listitem.setInfo(type='video', infoLabels={'title': item['name'], 'size': item['size']})
+            listitem.setInfo(type='video', infoLabels={'title': item['name'], 'size': int(item['size'])})
             xbmcplugin.addDirectoryItem(handle=pluginhandle, url=url, listitem=listitem, isFolder=True)
         
         xbmcplugin.endOfDirectory(pluginhandle)
