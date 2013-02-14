@@ -37,7 +37,7 @@ __settings__ = xbmcaddon.Addon(id='plugin.video.furk')
 __plugin__ = 'Furk.net'
 __author__ = 'Gpun Yog'
 __url__ = 'https://www.furk.net/t/xbmc'
-__version__ = '1.0.9'
+__version__ = '1.0.11'
 print "[PLUGIN] '%s: version %s' initialized! argv=%s" % (__plugin__, __version__, sys.argv)
 
 API_URL = "https://api.furk.net/api/"
