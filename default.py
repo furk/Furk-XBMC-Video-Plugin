@@ -26,6 +26,11 @@ import urllib
 import urllib2
 import re
 
+# monkeypatching CERTIFICATE_VERIFY_FAILED
+import ssl
+if hasattr(ssl, '_create_unverified_context'):
+    ssl._create_default_https_context = ssl._create_unverified_context
+
 # quircks for old xbmc
 try:
     import json
